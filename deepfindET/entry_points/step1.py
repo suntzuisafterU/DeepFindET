@@ -130,11 +130,10 @@ def create_train_targets(
     target_names = list(train_targets.keys())
 
     # Radius list
-    max_target = max(e["label"] for e in train_targets.values())
-    radius_list = np.zeros((max_target,), dtype=np.uint8)
-
-    for _key, value in train_targets.items():
-        radius_list[value["label"] - 1] = value["radius"] if value["radius"] is not None else 0
+    radius_list = np.array([
+        value['radius'] if value['radius'] is not None else 0
+        for value in train_targets.values()
+    ], dtype=np.uint8)
 
     # Load tomo_ids
     tomo_ids = [run.name for run in copickRoot.runs] if tomo_ids is None else tomo_ids.split(",")
